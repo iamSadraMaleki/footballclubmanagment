@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت نقل و انتقالات بازیکنان</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: "2  Koodak"; /* یا هر فونت دلخواه دیگر */
+      background: linear-gradient(to bottom right, #e0eafc, #cfdef3); /* پس‌زمینه градиент */
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: #333; /* رنگ متن تیره برای کنتراست بهتر */
+    }
+
+    .container {
+      width: 90%;
+      max-width: 960px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8); /* پس‌زمینه نیمه‌شفاف سفید */
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      flex: 1; /* برای پوشش کل فضای موجود */
+    }
+
+    h1 {
+      text-align: center;
+      color: #007bff; /* رنگ آبی برای عنوان */
+      margin-bottom: 30px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* واکنش‌گرا */
+      grid-gap: 20px;
+    }
+
+    .option-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      overflow: hidden; /* برای جلوگیری از بیرون‌زدن آیکون‌ها */
+      position: relative; /* برای قرار دادن آیکون در گوشه */
+    }
+
+    .option-card:hover {
+      transform: translateY(-5px); /* کمی به بالا حرکت می‌کند */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .option-card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%; /* لینک کل کارت را پوشش می‌دهد */
+    }
+
+    .option-icon {
+      position: absolute;
+      top: 10px;
+      left: 10px; /* یا right برای rtl */
+      font-size: 2em;
+      color: #007bff;
+    }
+
+    .option-title {
+      text-align: center;
+      margin-top: 40px; /* فاصله از بالا برای عنوان */
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .home-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+    }
+
+    .home-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>مدیریت نقل و انتقالات بازیکنان</h1>
+
+  <div class="options-grid">
+
+    <div class="option-card">
+      <a href="http://localhost:8080/buy-players">
+        <i class="fas fa-user-plus option-icon"></i>
+        <div class="option-title">خرید بازیکن</div>
+      </a>
+    </div>
+
+    <div class="option-card">
+      <a href="http://localhost:8080/player-sales">
+        <i class="fas fa-user-minus option-icon"></i>
+        <div class="option-title">فروش بازیکن</div>
+      </a>
+    </div>
+
+    <div class="option-card">
+      <a href="">
+        <i class="fas fa-exchange-alt option-icon"></i>
+        <div class="option-title">گزارش نقل انتقالات</div>
+      </a>
+    </div>
+
+    <div class="option-card">
+      <a href="/players/extended">
+        <i class="fas fa-file-signature option-icon"></i>
+        <div class="option-title">تمدید قرارداد</div>
+      </a>
+    </div>
+
+    <div class="option-card">
+      <a href="/players/goals">
+        <i class="fas fa-bullseye option-icon"></i>
+        <div class="option-title">اهداف نقل و انتقالات</div>
+      </a>
+    </div>
+
+    <div class="option-card">
+      <a href="/players/terminated">
+        <i class="fas fa-ban option-icon"></i>
+        <div class="option-title">بازیکنان مازاد</div>
+      </a>
+    </div>
+
+  </div>
+
+  <a href="http://localhost:8080/home" class="home-button">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+</body>
+</html>

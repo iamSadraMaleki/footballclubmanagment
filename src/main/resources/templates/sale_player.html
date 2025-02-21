@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت فروش بازیکنان</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  <style>
+    body { background-color: #f4f4f4; }
+    .container { background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+    h2 { color: #007bff; }
+    .btn-primary { background-color: #28a745; border: none; }
+    .btn-danger { background-color: #dc3545; }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h2 class="mb-4"><i class="fas fa-futbol"></i> مدیریت خرید بازیکنان</h2>
+  <button class="btn btn-primary mb-3" onclick="showForm()"><i class="fas fa-plus"></i> افزودن بازیکن</button>
+  <table class="table table-bordered text-center">
+    <thead class="table-dark">
+    <tr>
+      <th>شناسه</th>
+      <th>نام</th>
+      <th>نام خانوادگی</th>
+      <th>سن</th>
+      <th>شماره پیراهن</th>
+      <th>پست</th>
+      <th>ملیت</th>
+      <th>مدت قرارداد</th>
+      <th>مبلغ قرارداد</th>
+      <th>نماینده</th>
+      <th>کد پرسنلی</th>
+      <th>کد ملی</th>
+      <th>نوع جدایی</th>
+      <th>بند فسخ</th>
+      <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody id="players-list">
+    <!-- بازیکنان اینجا نمایش داده می‌شوند -->
+    </tbody>
+  </table>
+</div>
+
+<!-- فرم افزودن بازیکن -->
+<div class="modal fade" id="playerFormModal" tabindex="-1" aria-labelledby="playerFormLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">افزودن بازیکن</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="player-form">
+          <div class="row mb-3">
+            <div class="col-md-4"><label>نام</label><input type="text" class="form-control" id="firstName" required></div>
+            <div class="col-md-4"><label>نام خانوادگی</label><input type="text" class="form-control" id="lastName" required></div>
+            <div class="col-md-4"><label>سن</label><input type="number" class="form-control" id="age" required></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6"><label>شماره پیراهن</label><input type="number" class="form-control" id="shirtNumber" required></div>
+            <div class="col-md-6"><label>پست</label><input type="text" class="form-control" id="position" required></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6"><label>ملیت</label><input type="text" class="form-control" id="nationality" required></div>
+            <div class="col-md-6"><label>مدت قرارداد</label><input type="number" class="form-control" id="contractDuration" required></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6"><label>مبلغ قرارداد</label><input type="number" class="form-control" id="contractAmount" required></div>
+            <div class="col-md-6"><label>نماینده</label><input type="text" class="form-control" id="agent"></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6"><label>کد پرسنلی</label><input type="text" class="form-control" id="staffCode" required></div>
+            <div class="col-md-6"><label>کد ملی</label><input type="text" class="form-control" id="nationalId" required></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6"><label>نوع جدایی</label><input type="text" class="form-control" id="separationType" required></div>
+            <div class="col-md-6"><label>بند فسخ</label><input type="number" class="form-control" id="releaseClause" required></div>
+          </div>
+          <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> ذخیره</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // نمایش فرم فروش بازیکن
+  function showForm() {
+    $('#playerFormModal').modal('show');
+  }
+
+  // دریافت لیست فروش بازیکنان از API
+  async function fetchSales() {
+    try {
+      const response = await fetch('/player-sales/api');
+      if (!response.ok) {
+        throw new Error(`خطا در دریافت بازیکنان. کد وضعیت: ${response.status}`);
+      }
+
+      const players = await response.json();
+      const playersList = document.getElementById('players-list');
+      playersList.innerHTML = ''; // پاک کردن لیست قبلی
+
+      players.forEach(player => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+                <td>${player.id}</td>
+                <td>${player.firstName}</td>
+                <td>${player.lastName}</td>
+                <td>${player.age}</td>
+                <td>${player.shirtNumber}</td>
+                <td>${player.position}</td>
+                <td>${player.nationality}</td>
+                <td>${player.contractDuration}</td>
+                <td>${player.contractAmount}</td>
+                <td>${player.agent || '-'}</td>
+                <td>${player.staffCode}</td>
+                <td>${player.nationalId}</td>
+                <td>${player.separationType || '-'}</td>
+                <td>${player.releaseClause || '-'}</td>
+                <td>
+                    <button class='btn btn-warning btn-sm' onclick='editSale(${player.id})'><i class="fas fa-edit"></i> ویرایش</button>
+                    <button class='btn btn-danger btn-sm' onclick='deleteSale(${player.id})'><i class="fas fa-trash"></i> حذف</button>
+                </td>
+            `;
+        playersList.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error fetching players:', error);
+      alert('خطایی در دریافت لیست بازیکنان رخ داده است.');
+    }
+  }
+
+  // ثبت فروش بازیکن
+  async function submitSaleForm(event) {
+    event.preventDefault();
+
+    const saleData = {
+      firstName: document.getElementById('firstName').value.trim(),
+      lastName: document.getElementById('lastName').value.trim(),
+      age: parseInt(document.getElementById('age').value) || 0,
+      shirtNumber: parseInt(document.getElementById('shirtNumber').value) || 0,
+      position: document.getElementById('position').value.trim(),
+      nationality: document.getElementById('nationality').value.trim(),
+      contractDuration: parseInt(document.getElementById('contractDuration').value) || 0,
+      contractAmount: parseFloat(document.getElementById('contractAmount').value) || 0,
+      agent: document.getElementById('agent').value.trim() || "",
+      staffCode: document.getElementById('staffCode').value.trim(),
+      nationalId: document.getElementById('nationalId').value.trim(),
+      separationType: document.getElementById('separationType').value.trim(),
+      releaseClause: parseFloat(document.getElementById('releaseClause').value) || 0
+    };
+
+    try {
+      const response = await fetch('/player-sales/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(saleData),
+      });
+
+      if (response.ok) {
+        alert('فروش بازیکن با موفقیت ثبت شد!');
+        document.getElementById('player-form').reset();
+        $('#playerFormModal').modal('hide');
+        fetchSales();
+      } else {
+        throw new Error(`خطا در ثبت فروش. کد وضعیت: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error submitting sale:', error);
+      alert('خطایی در ثبت فروش بازیکن رخ داده است.');
+    }
+  }
+
+  // حذف فروش بازیکن
+  async function deleteSale(id) {
+    if (!confirm('آیا از حذف این فروش مطمئن هستید؟')) return;
+
+    try {
+      const response = await fetch(`/player-sales/api/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('فروش بازیکن با موفقیت حذف شد!');
+        fetchSales();
+      } else {
+        throw new Error(`خطا در حذف فروش. کد وضعیت: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error deleting sale:', error);
+      alert('خطایی در حذف فروش بازیکن رخ داده است.');
+    }
+  }
+
+  // دریافت اطلاعات فروش برای ویرایش
+  async function editSale(id) {
+    try {
+      const response = await fetch(`/player-sales/api/${id}`);
+
+      if (!response.ok) {
+        throw new Error(`خطا در دریافت اطلاعات فروش. کد وضعیت: ${response.status}`);
+      }
+
+      const sale = await response.json();
+      console.log("داده‌های دریافتی از API:", sale);
+
+      if (!sale || Object.keys(sale).length === 0) {
+        throw new Error("اطلاعات فروش بازیکن دریافت نشد.");
+      }
+
+      // مقداردهی فرم فقط اگر مقدارها موجود باشن
+      document.getElementById('firstName').value = sale.firstName || "";
+      document.getElementById('lastName').value = sale.lastName || "";
+      document.getElementById('age').value = sale.age || 0;
+      document.getElementById('shirtNumber').value = sale.shirtNumber || 0;
+      document.getElementById('position').value = sale.position || "";
+      document.getElementById('nationality').value = sale.nationality || "";
+      document.getElementById('contractDuration').value = sale.contractDuration || 0;
+      document.getElementById('contractAmount').value = sale.contractAmount || 0;
+      document.getElementById('agent').value = sale.agent || "";
+      document.getElementById('staffCode').value = sale.staffCode || "";
+      document.getElementById('nationalId').value = sale.nationalId || "";
+      document.getElementById('separationType').value = sale.separationType || "";
+      document.getElementById('releaseClause').value = sale.releaseClause || 0;
+
+      document.getElementById('saveSaleButton').setAttribute('onclick', `updateSale(${id})`);
+      $('#playerFormModal').modal('show');
+
+    } catch (error) {
+      console.error('Error fetching sale details:', error);
+      alert('خطایی در دریافت اطلاعات فروش بازیکن رخ داده است.');
+    }
+  }
+
+  // به‌روزرسانی اطلاعات فروش بازیکن
+  async function updateSale(id) {
+    const updatedSaleData = {
+      id: id, // اضافه کردن ID برای جلوگیری از Insert جدید
+      firstName: document.getElementById('firstName').value.trim(),
+      lastName: document.getElementById('lastName').value.trim(),
+      age: parseInt(document.getElementById('age').value) || 0,
+      shirtNumber: parseInt(document.getElementById('shirtNumber').value) || 0,
+      position: document.getElementById('position').value.trim(),
+      nationality: document.getElementById('nationality').value.trim(),
+      contractDuration: parseInt(document.getElementById('contractDuration').value) || 0,
+      contractAmount: parseFloat(document.getElementById('contractAmount').value) || 0,
+      agent: document.getElementById('agent').value.trim() || "",
+      staffCode: document.getElementById('staffCode').value.trim(),
+      nationalId: document.getElementById('nationalId').value.trim(),
+      separationType: document.getElementById('separationType').value.trim(),
+      releaseClause: parseFloat(document.getElementById('releaseClause').value) || 0
+    };
+
+    try {
+      const response = await fetch(`/player-sales/api/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedSaleData),
+      });
+
+      if (response.ok) {
+        alert('اطلاعات فروش بازیکن با موفقیت به‌روزرسانی شد!');
+        document.getElementById('player-form').reset();
+        $('#playerFormModal').modal('hide');
+        fetchSales();
+      } else {
+        throw new Error(`خطا در به‌روزرسانی فروش. کد وضعیت: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error updating sale:', error);
+      alert('خطایی در به‌روزرسانی اطلاعات فروش بازیکن رخ داده است.');
+    }
+  }
+
+  // هنگام بارگذاری صفحه، لیست فروش بازیکنان را دریافت کن
+  document.addEventListener('DOMContentLoaded', fetchSales);
+
+  // اتصال فرم فروش بازیکن به تابع ارسال
+  document.getElementById('player-form')?.addEventListener('submit', submitSaleForm);
+
+</script>
+</body>
+</html>

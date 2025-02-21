@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>ثبت نام</title>
+  <style>
+    body {
+      font-family: "2  Koodak";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #007bff; /* آبی */
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff; /* آبی */
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    }
+
+    button[type="submit"] {
+      background-color: #007bff; /* آبی */
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3; /* آبی تیره تر */
+    }
+    label {
+      display: block; /* label در یک خط جداگانه نمایش داده شود */
+      margin-bottom: 5px; /* فاصله از select */
+      font-weight: bold; /* وزن فونت bold */
+    }
+
+    select {
+      width: calc(100% - 12px); /* عرض کامل منهای padding */
+      padding: 8px; /* فاصله داخلی */
+      border: 1px solid #ccc; /* حاشیه */
+      border-radius: 4px; /* گرد کردن گوشه‌ها */
+      box-sizing: border-box; /* padding در عرض محاسبه شود */
+      font-size: 16px; /* اندازه فونت */
+      appearance: none; /* حذف استایل پیش‌فرض مرورگر (برای ظاهر بهتر در مرورگرهای مختلف) */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-color: white; /* رنگ پس زمینه */
+      background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>"); /* اضافه کردن فلش پایین */
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px; /* ایجاد فضا برای فلش */
+    }
+
+    select:focus {
+      outline: none; /* حذف outline هنگام focus */
+      border-color: #007bff; /* تغییر رنگ حاشیه هنگام focus */
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.2); /* اضافه کردن سایه هنگام focus */
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>فرم ثبت نام</h1>
+  <form id="signupForm">
+    <div>
+      <label for="name">نام:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="username">نام کاربری:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">رمز عبور:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <label for="phoneNumber">شماره موبایل:</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" required>
+    </div>
+    <div>
+      <label for="role">نقش:</label>
+      <select id="role" name="role" required>
+        <option value="ADMIN"> مدیر</option>
+        <option value="PLAYER">بازیکن</option>
+        <option value="CEO">مدیر عامل</option>
+        <option value="STAFF">کارمند</option>
+        <option value="MANAGER">مربی</option>
+      </select>
+    </div>
+    <br>
+    <button type="submit">ثبت نام</button>
+    <div class="error" id="error"></div>
+  </form>
+</div>
+<script>
+  const signupForm = document.getElementById('signupForm');
+  const errorDiv = document.getElementById('error');
+
+  signupForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('role').value;
+
+    fetch('/users/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, username, password, role })
+    })
+            .then(response => {
+              if (!response.ok) {
+                if (response.status === 400) {
+                  throw new Error('خطا در اطلاعات ورودی. لطفا دوباره تلاش کنید.');
+                } else {
+                  throw new Error('خطا در برقراری ارتباط با سرور.');
+                }
+              }
+              return response.json();
+            })
+            .then(data => {
+              // ثبت نام موفق
+              console.log('Registration successful:', data);
+              alert('ثبت نام با موفقیت انجام شد.');
+              window.location.href = '/users/login';
+            })
+            .catch(error => {
+              // مدیریت خطا
+              console.error('Registration failed:', error);
+              errorDiv.textContent = error.message;
+            });
+  });
+</script>
+</body>
+</html>

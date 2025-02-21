@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>درباره سیستم مدیریت باشگاه استقلال</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Vazirmatn', sans-serif; /* اگر فونت فارسی دارید */
+      direction: rtl;
+      text-align: center;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 300px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+      padding: 20px;
+      text-align: right;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .card-text {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 50px;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+    }
+    .home-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #007bff;
+      color: white;
+      padding: 15px;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      text-decoration: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+    }
+
+    .home-button:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">درباره سیستم مدیریت باشگاه استقلال</div>
+
+  <div class="card-container">
+    <!-- کارت اطلاعات نویسنده -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">اطلاعات نویسنده سیستم</h5>
+        <p class="card-text">نام: محمد صدرا ملکی</p>
+        <p class="card-text">شماره دانشجویی: 1401135246</p>
+        <p class="card-text">دبیر پروژه: دکتر ایرانی</p>
+        <p class="card-text">درس پروژه: پایگاه داده</p>
+      </div>
+    </div>
+
+    <!-- کارت اطلاعات درباره سیستم -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">درباره سیستم</h5>
+        <p class="card-text">هدف این سیستم مدیریت امورات باشگاه فوتبال است که به صورت نمونه باشگاه استقلال انتخاب شده است.</p>
+        <p class="card-text">این سیستم شامل بخش‌هایی نظیر مدیریت نقل و انتقالات، امور مالی، مسابقات و تمرینات تیم است.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="http://localhost:8080/home" class="home-button">
+  <i class="fas fa-home"></i>
+</a>
+
+<div class="footer">&copy; 2025 مدیریت باشگاه فوتبال استقلال</div>
+
+</body>
+</html>
